@@ -42,13 +42,13 @@ function App() {
   }
 
   return (
-    <main className="h-full w-full">
-      {fetching && <div className="p-1 w-full bg-red-500 absolute left-0 top-0"></div>}
-      <div className="border mx-auto overflow-auto sm:w-[70%] sm:h-[90%]">
+    <main className="h-full  w-full">
+      {fetching && <div className="p-1  w-full bg-red-500 absolute left-0 top-0"></div>}
+      <div className="border mx-auto mainSection overflow-auto sm:w-[70%] sm:h-[90%]">
         {searchError && <div className="text-red-500 text-center">{searchError}</div>}
         <div className="flex border-b-2 justify-between items-center px-3 py-1">
-          <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm("") } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
-          <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm("") } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
+          <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm(""); setSearchError("") } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
+          <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm(""); setSearchError("") } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
           <div className="h-[fit-content] flex items-center border rounded-sm border-yellow">
             <input className="px-3 outline-none py-2 text-xl" value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value); setSearchError(""); }} onKeyDown={handleKeyDown} placeholder="Search By Title" type="search" name="searchMovie" id="searchMovie" />
             <button onClick={onSearch} className="text-2xl px-2">🔎</button>

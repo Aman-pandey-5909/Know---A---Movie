@@ -76,6 +76,7 @@ button:focus-visible {
     border-color: black;
     background-color: #ffffff;
   }
+  
   .lightModeIcon{
     display: inline;
     visibility: visible;
