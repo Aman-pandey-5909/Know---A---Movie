@@ -1,0 +1,2 @@
+# Know - A - Movie
+## Uses OMDB API to FETCH AND DISPLAY YOUR FAVORITE MOVIES
