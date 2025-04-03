@@ -1,4 +1,4 @@
-const SearchCards = ({ Title, Released, Rated, Runtime, Country, Poster, Actors, Plot, BoxOffice, Genre, Language, Type, Writer, imdbRating, imdbVotes }) => {
+const SearchCards = ({ Title, Released, Rated, Runtime, Country, Poster, Actors, Plot, BoxOffice, Genre, Language, Type, Writer, imdbRating, imdbVotes, totalSeasons }) => {
 
     return (
         <div className="w-[90%] mx-auto">
@@ -19,7 +19,12 @@ const SearchCards = ({ Title, Released, Rated, Runtime, Country, Poster, Actors,
                             <span className="font-semibold text-2xl text-cyan-600">Language: </span>
                             {Language}
                         </div>
-                        
+                        {totalSeasons &&
+                            <div className="text-xl text-purple-400">
+                                <span className="font-semibold text-2xl text-cyan-600">Seasons: </span>
+                                {totalSeasons}
+                            </div>
+                        }
                         <div className="text-xl text-purple-400">
                             <span className="font-semibold text-2xl text-cyan-600">Released: </span>
                             {Released}
@@ -56,7 +61,7 @@ const SearchCards = ({ Title, Released, Rated, Runtime, Country, Poster, Actors,
                             <span className="font-semibold text-2xl text-cyan-600">IMDB votes: </span>
                             {imdbVotes}
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
