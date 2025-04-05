@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react"
 import SearchCards from "./SearchCards";
-import RecommendationCard from "./RecommendationCard";
+import RecommendationCard, { CardContainer } from "./RecommendationCard";
 import { useNavigate } from "react-router-dom";
 import { token } from "../constant/token"
 
@@ -9,7 +9,8 @@ const Home = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [searchError, setSearchError] = useState("")
     const [fetching, setFetching] = useState(false)
-    const [data, setData] = useState({});
+    const [respData, setRespData] = useState({})
+    const [data, setData] = useState([]);
     const navigate = useNavigate();
 
     const toTitleCase = (str) => {
@@ -29,10 +30,11 @@ const Home = () => {
             if (searchTerm.toLowerCase() === "advanced search") {
                 navigate("/advSearch")
             } else {
-                const response = await axios.get(`http://www.omdbapi.com/?t=${toTitleCase(searchTerm)}&plot=full&apikey=${token}`)
-                setData(response.data)
+                const response = await axios.get(`http://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&plot=full&apikey=${token}`)
+                setRespData(response.data)
+                setData(response.data.Search)
                 setFetching(false)
-                console.log(data);
+                console.log("data:", data);
             }
         } catch (error) {
             console.error("Error Occured when fetching data from api, If you are a admin please see the terminal");
@@ -53,33 +55,37 @@ const Home = () => {
             <div className="border mx-auto mainSection relative overflow-auto sm:w-[70%] h-full">
                 {searchError && <div className="text-red-500 absolute top-0 text-center w-full ">{searchError}</div>}
                 <div className="flex border-b-2 justify-between items-center px-3 py-1">
-                    <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm(""); setSearchError("") } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
-                    <img onClick={() => { if (Object.keys(data).length > 0) { setData({}); setSearchTerm(""); setSearchError("") } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
+                    <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
+                    <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
                     <div className="h-[fit-content] flex items-center border rounded-sm border-yellow">
                         <input className="px-3 outline-none py-2 text-xl" value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value); setSearchError(""); }} onKeyDown={handleKeyDown} placeholder="Search By Title" type="search" name="searchMovie" id="searchMovie" />
                         <button onClick={onSearch} className="text-2xl px-2">🔎</button>
                     </div>
                 </div>
-                <div className="px-3 py-1">
-                    {!data || Object.keys(data).length === 0 ? (<RecommendationCard />) : (data.Response === 'True' ? <SearchCards
-                        Title={data.Title}
-                        Released={data.Released}
-                        Rated={data.Rated}
-                        Runtime={data.Runtime}
-                        Country={data.Country}
-                        Poster={data.Poster}
-                        Actors={data.Actors}
-                        Plot={data.Plot}
-                        BoxOffice={data.BoxOffice}
-                        Genre={data.Genre}
-                        Language={data.Language}
-                        Type={data.Type}
-                        Writer={data.Writer}
-                        imdbRating={data.imdbRating}
-                        imdbVotes={data.imdbVotes}
-                        totalSeasons={data.totalSeasons}
-                    /> : <p className="text-2xl font-semibold text-center">{data.Error}</p>)}
+                <div className="px-3 py-1 grid grid-cols-3 gap-x-3 gap-y-6">
+                    {
+                        /**
+                         * data -> array he 
+                         * response.data -> totalResults and Response 
+                         */
+                        Object.keys(respData).length === 0 ? <RecommendationCard /> : (
+                            respData.Response === "False" ? <div>{respData.Error}</div> :
+                                data.map((value, index) => {
+                                    return <div key={index} className=" hover:scale-105 transition-all duration-200 backdrop-blur-2xl">
+                                        <CardContainer key={value.Title}
+                                            Title={value.Title}
+                                            Poster={value.Poster}
+                                            Year={value.Year}
+                                            Type={value.Type}
+                                        />
+                                    </div>
+                                }))
+                    }
                 </div>
+                {
+                    respData?.Response === "True" &&
+                    <span className="px-3 py-3 text-2xl font-semibold">Total Results: {respData.totalResults}</span>
+                }
             </div>
         </main>
     )
