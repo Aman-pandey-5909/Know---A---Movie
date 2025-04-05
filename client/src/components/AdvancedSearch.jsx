@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { CardContainer } from "./RecommendationCard";
 import { useNavigate } from "react-router-dom";
 const AdvancedSearch = () => {
   const navigate = useNavigate()
+  const [userChoice, setUserChoice] = useState({
+    title: "",
+    year: "",
+    type: "",
+    genre: []
+  })
+
   return (
     <div className="border w-[80%] h-[95%] mx-auto">
       <div className="border-b-2 flex justify-center">
@@ -14,7 +22,9 @@ const AdvancedSearch = () => {
             <input className="px-3 outline-none py-2 w-full text-xl" placeholder="Search By Title" type="search" name="advsearchMovie" id="advsearchMovie" />
             <button className="text-2xl px-2">🔎</button>
           </div>
-          <div className="flex justify-between my-3 gap-3">
+          {
+            /*
+            <div className="flex justify-between my-3 gap-3">
             <div className="border h-fit rounded-md">
               <label htmlFor="yearSearch" className="px-2 border-r-2 text-xl">Year</label>
               <input type="number" name="year" id="yearSearch" className="px-3 outline-none py-2 text-xl" />
@@ -95,11 +105,17 @@ const AdvancedSearch = () => {
                 <button className="border px-4 rounded-md hover:scale-105 transition-all duration-200 py-1">Reset</button>
               </div>
             </div>
-          </div>
+            */
+          }
         </div>
-        <CardContainer text={"hello"} />
       </div>
+      {/* <CardContainer text={"hello"} /> */}
+      <p className="text-2xl text-center leading-10"> <b className="text-red-400">Unable To Implement Advanced Search Feature</b> Due to OMDB API's Limitations, For More info Please Visit :
+        <a href="https://github.com/Aman-pandey-5909/Know---A---Movie/blob/main/README.md" target="_blank"> read me</a><br></br>
+        &nbsp;Click <a href="/">Here</a> To Navigate Back to Home Page
+      </p>
     </div>
+    
   )
 }
 export default AdvancedSearch
