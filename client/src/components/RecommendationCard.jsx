@@ -1,4 +1,6 @@
-
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { token } from "../constant/token"
 export const CardContainer = ({ Poster="/default_tnail.png", Title, Type, Year }) => {
     return (
         <div className="border p-3 h-full rounded-md">
@@ -16,12 +18,38 @@ export const CardContainer = ({ Poster="/default_tnail.png", Title, Type, Year }
 
 const RecommendationCard = () => {
 
+    const [recoData, setRecoData] = useState([])
 
+   useEffect(() => {
+     const fetchRecommendations = async() => {
+        try {
+            const randomAssLetter = ["Dark", "Fast", "glass", "Wrtie", "Someday", "There", "Where", "Somewhere", "From"]  //camel case cuz why not
+            const page = Math.floor(Math.random()*5)+1;
+            const randomLetter = randomAssLetter[Math.floor(Math.random()*randomAssLetter.length)]
+            const response = await axios.get(`http://www.omdbapi.com/?s=${randomLetter}&page=${page}&apikey=${token}`)
+            setRecoData(response.data.Search)
+            console.log(response.data);
+        } catch (error) {
+            console.error("Encountered an error", error);
+        }
+     }
+     fetchRecommendations()
+   }, [])
+   
 
     return (
         <div>
-            <div className="text-2xl font-semibold text-center">
-                <CardContainer text={"Search For Your Movie By Title, Work In Progress Recommendation section and Advanced Search Feature"} />
+            <div className="px-3 py-1 grid grid-cols-3 gap-x-3 gap-y-6">
+                {recoData.map((value,index)=>(
+                    <div key={index} className=" hover:scale-105 transition-all duration-200 backdrop-blur-2xl">
+                        <CardContainer
+                            Poster={value.Poster}
+                            Title={value.Title}
+                            Year={value.Year}
+                            Type={value.Type}
+                        />
+                    </div>
+                ))}
             </div>
         </div>
     )

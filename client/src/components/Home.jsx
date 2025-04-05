@@ -43,6 +43,10 @@ const Home = () => {
         }
     }
 
+    const onClickCard = async() => {
+        
+    }
+
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             onSearch()
@@ -62,7 +66,7 @@ const Home = () => {
                         <button onClick={onSearch} className="text-2xl px-2">🔎</button>
                     </div>
                 </div>
-                <div className="px-3 py-1 grid grid-cols-3 gap-x-3 gap-y-6">
+                <div className={`px-3 py-1 ${ Object.keys(respData).length !== 0 && "grid grid-cols-3 gap-x-3 gap-y-6"}`}>
                     {
                         /**
                          * data -> array he 
