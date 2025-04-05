@@ -23,7 +23,7 @@ const RecommendationCard = () => {
     const [recoData, setRecoData] = useState([])
     const onClickCard = async(imdbId) => {
         try {
-            const response = await axios.get(`http://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
+            const response = await axios.get(`https://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
             sessionStorage.setItem("clickedCardDetails", JSON.stringify(response.data))
             navigate('/result')
         } catch (error) {
@@ -37,7 +37,7 @@ const RecommendationCard = () => {
             const randomAssLetter = ["Dark", "Fast", "glass", "Write", "Someday", "There", "Where", "Somewhere", "From"]  //camel case cuz why not
             const page = Math.floor(Math.random()*5)+1;
             const randomLetter = randomAssLetter[Math.floor(Math.random()*randomAssLetter.length)]
-            const response = await axios.get(`http://www.omdbapi.com/?s=${randomLetter}&page=${page}&apikey=${token}`)
+            const response = await axios.get(`https://www.omdbapi.com/?s=${randomLetter}&page=${page}&apikey=${token}`)
             setRecoData(response.data.Search)
             // console.log(response.data);
         } catch (error) {

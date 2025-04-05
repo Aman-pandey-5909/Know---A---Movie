@@ -30,7 +30,7 @@ const Home = () => {
             if (searchTerm.toLowerCase() === "advanced search") {
                 navigate("/advSearch")
             } else {
-                const response = await axios.get(`http://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&page=${page}&plot=full&apikey=${token}`)
+                const response = await axios.get(`https://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&page=${page}&plot=full&apikey=${token}`)
                 setRespData(response.data)
                 setData(response.data.Search)
                 setFetching(false)
@@ -47,7 +47,7 @@ const Home = () => {
     const onClickCard = async (imdbId) => {
         try {
             setFetching(true)
-            const response = await axios.get(`http://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
+            const response = await axios.get(`https://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
             sessionStorage.setItem("clickedCardDetails", JSON.stringify(response.data))
             navigate('/result')
         } catch (error) {
