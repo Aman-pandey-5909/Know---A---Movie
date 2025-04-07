@@ -25,7 +25,7 @@ const RecommendationCard = () => {
         try {
             const response = await axios.get(`https://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
             sessionStorage.setItem("clickedCardDetails", JSON.stringify(response.data))
-            navigate('/result')
+            navigate(`/result`)
         } catch (error) {
             console.error("Error Occured When Clicking on za card: ", error);
         }
