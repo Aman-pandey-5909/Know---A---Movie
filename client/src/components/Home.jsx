@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import RecommendationCard, { CardContainer } from "./RecommendationCard";
 import { useNavigate } from "react-router-dom";
 import { token } from "../constant/token"
@@ -11,6 +11,7 @@ const Home = () => {
     const [respData, setRespData] = useState({})
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
+    const seventhCardInPage = useRef()
     const navigate = useNavigate();
 
     const toTitleCase = (str) => {
@@ -33,8 +34,7 @@ const Home = () => {
                 const response = await axios.get(`https://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&page=${page}&plot=full&apikey=${token}`)
                 setRespData(response.data)
                 setData(response.data.Search)
-                setFetching(false)
-                console.log("data:", data);
+                // console.log("data:", data);
             }
         } catch (error) {
             console.error("Error Occured when fetching data from api, If you are a admin please see the terminal");
@@ -49,7 +49,7 @@ const Home = () => {
             setFetching(true)
             const response = await axios.get(`https://www.omdbapi.com/?i=${imdbId}&plot=full&apikey=${token}`)
             sessionStorage.setItem("clickedCardDetails", JSON.stringify(response.data))
-            navigate('/result')
+            navigate(`/result`)
         } catch (error) {
             console.error("Error Occured When Clicking on za card: ", error);
         } finally {
@@ -85,20 +85,16 @@ const Home = () => {
                         Object.keys(respData).length === 0 ? <RecommendationCard /> : (
                             respData.Response === "False" ? <div>{respData.Error}</div> :
                                 data.map((value, index) => {
-                                    return <div onClick={() => { onClickCard(value.imdbID) }} key={index} className=" hover:scale-105 transition-all duration-200 backdrop-blur-2xl">
-                                        <CardContainer key={value.Title}
-                                            Title={value.Title}
-                                            Poster={value.Poster}
-                                            Year={value.Year}
-                                            Type={value.Type}
-                                        />
-                                    </div>
+                                    // const isLastSeventh = index === data.length - 4;
+                                    return (<div onClick={() => { onClickCard(value.imdbID) }} key={index} className=" hover:scale-105 transition-all duration-200 backdrop-blur-2xl">
+                                        <CardContainer {...value} />
+                                    </div>)
                                 }))
                     }
                 </div>
                 {
                     respData?.Response === "True" &&
-                    <span className="px-3 py-3 text-2xl font-semibold">Total Pages: {Math.ceil(parseInt(respData.totalResults)/10)}</span>
+                    <span className="px-3 py-3 text-2xl font-semibold">Total Pages: {Math.ceil(parseInt(respData.totalResults) / 10)}</span>
                 }
             </div>
         </main>
