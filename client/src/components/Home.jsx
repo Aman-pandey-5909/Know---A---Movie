@@ -10,8 +10,7 @@ const Home = () => {
     const [fetching, setFetching] = useState(false)
     const [respData, setRespData] = useState({})
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
-    const seventhCardInPage = useRef()
+    const [page, setPage] = useState(null);
     const navigate = useNavigate();
 
     const toTitleCase = (str) => {
@@ -28,6 +27,7 @@ const Home = () => {
                 return
             }
             setFetching(true)
+            setPage(1)
             if (searchTerm.toLowerCase() === "advanced search") {
                 navigate("/advSearch")
             } else {
@@ -42,6 +42,24 @@ const Home = () => {
             setFetching(false)
         }
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if(!searchTerm) return
+                setFetching(true);
+                const response = await axios.get(`https://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&page=${page}&plot=full&apikey=${token}`);
+                setRespData(response.data);
+                setData(response.data.Search);
+            } catch (error) {
+                console.error("Error Occurred:", error);
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        fetchData();
+    }, [page])
 
 
     const onClickCard = async (imdbId) => {
@@ -94,7 +112,13 @@ const Home = () => {
                 </div>
                 {
                     respData?.Response === "True" &&
-                    <span className="px-3 py-3 text-2xl font-semibold">Total Pages: {Math.ceil(parseInt(respData.totalResults) / 10)}</span>
+                    <span className="px-3 py-3 text-2xl font-semibold">Total Pages: {
+                        Array.from({ length: Math.ceil(parseInt(respData.totalResults) / 10) }, (_, i) => (
+                            <button className={page === i + 1 ? "border px-2 bg-pink-300 text-black mx-2" : "border px-2  mx-2"} key={i} onClick={() => setPage(i + 1)}>
+                                {i + 1}
+                            </button>
+                        ))
+                    }</span>
                 }
             </div>
         </main>
