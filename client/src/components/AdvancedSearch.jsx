@@ -111,7 +111,7 @@ const AdvancedSearch = () => {
       </div>
       {/* <CardContainer text={"hello"} /> */}
       <p className="text-2xl text-center leading-10"> <b className="text-red-400">Unable To Implement Advanced Search Feature</b> Due to OMDB API's Limitations, For More info Please Visit :
-        <a href="https://github.com/Aman-pandey-5909/Know---A---Movie/blob/main/README.md" target="_blank"> read me</a><br></br>
+        <a href="https://github.com/Aman-pandey-5909/KnowAMovie/blob/main/README.md" target="_blank"> read me</a><br></br>
         &nbsp;Click <a href="/">Here</a> To Navigate Back to Home Page
       </p>
     </div>
