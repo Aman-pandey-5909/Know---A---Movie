@@ -11,6 +11,7 @@ const Home = () => {
     const [respData, setRespData] = useState({})
     const [data, setData] = useState([]);
     const [page, setPage] = useState(null);
+    const [pageBtn, setPageBtn] = useState([])
     const navigate = useNavigate();
 
     const toTitleCase = (str) => {
@@ -46,7 +47,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                if(!searchTerm) return
+                if (!searchTerm) return
                 setFetching(true);
                 const response = await axios.get(`https://www.omdbapi.com/?s=${toTitleCase(searchTerm)}&page=${page}&plot=full&apikey=${token}`);
                 setRespData(response.data);
@@ -81,6 +82,35 @@ const Home = () => {
         }
     }
 
+
+    useEffect(() => {
+        if (respData?.Response === "True") {
+            const totalPages = Math.ceil(parseInt(respData.totalResults) / 10);
+            const pages = [];
+
+            if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+            } else {
+                if (page > 3) {
+                    pages.push(1, 2, '...');
+                    if (page > totalPages - 3) {
+                        for (let i = totalPages - 4; i <= totalPages; i++) {
+                            if (i > 2) pages.push(i);
+                        }
+                    } else {
+                        pages.push(page - 1, page, page + 1, '...', totalPages);
+                    }
+                } else {
+                    for (let i = 1; i <= 3; i++) pages.push(i);
+                    pages.push('...', totalPages);
+                }
+            }
+
+            setPageBtn(pages);
+        }
+    }, [respData, page]);
+
+
     return (
         <main className="h-full w-full">
             {fetching && <div className="p-1  w-full bg-red-500 absolute left-0 top-0"></div>}
@@ -110,16 +140,26 @@ const Home = () => {
                                 }))
                     }
                 </div>
-                {
-                    respData?.Response === "True" &&
-                    <span className="px-3 py-3 text-2xl font-semibold">Total Pages: {
-                        Array.from({ length: Math.ceil(parseInt(respData.totalResults) / 10) }, (_, i) => (
-                            <button className={page === i + 1 ? "border px-2 bg-pink-300 text-black mx-2" : "border px-2  mx-2"} key={i} onClick={() => setPage(i + 1)}>
-                                {i + 1}
-                            </button>
-                        ))
-                    }</span>
-                }
+                {respData?.Response === "True" && (
+                    <span className="px-3 py-3 text-2xl font-semibold">
+                        Total Pages: {
+                            pageBtn.map((val, idx) =>
+                                val === '...' ? (
+                                    <input type="number" className="w-10 text-center" value={page} onChange={(e) => { setPage(e.target.value) }} name="pageNo" id="pageNo" />
+                                ) : (
+                                    <button
+                                        className={page === val ? "border px-2 bg-pink-300 text-black mx-2" : "border px-2 mx-2"}
+                                        key={idx}
+                                        onClick={() => setPage(val)}
+                                    >
+                                        {val}
+                                    </button>
+                                )
+                            )
+                        }
+                    </span>
+                )}
+
             </div>
         </main>
     )
