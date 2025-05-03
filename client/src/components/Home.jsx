@@ -114,9 +114,9 @@ const Home = () => {
     return (
         <main className="h-full w-full">
             {fetching && <div className="p-1  w-full bg-red-500 absolute left-0 top-0"></div>}
-            <div className="border mx-auto mainSection relative overflow-auto md:w-[70%] w-full h-full">
+            <div className="border mx-auto mainSection relative overflow-auto lg:w-[70%] w-full h-full">
                 {searchError && <div className="text-red-500 absolute top-0 text-center w-full ">{searchError}</div>}
-                <div className="flex border-b-2 justify-between items-center px-3 py-1">
+                <div className="md:flex flex-col border-b-2 md:justify-between justify-center items-center px-3 py-1">
                     <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
                     <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
                     <div className="h-[fit-content] flex items-center border rounded-sm border-yellow">
