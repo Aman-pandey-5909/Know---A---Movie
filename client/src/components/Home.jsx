@@ -92,14 +92,14 @@ const Home = () => {
                 for (let i = 1; i <= totalPages; i++) pages.push(i);
             } else {
                 if (page > 3) {
-                    pages.push(1, 2, '...');
-                    if (page > totalPages - 3) {
-                        for (let i = totalPages - 4; i <= totalPages; i++) {
-                            if (i > 2) pages.push(i);
-                        }
-                    } else {
-                        pages.push(page - 1, page, page + 1, '...', totalPages);
-                    }
+                    pages.push(1, 2, 3, '...', totalPages);
+                    // if (page > totalPages - 3) {
+                    //     for (let i = totalPages - 4; i <= totalPages; i++) {
+                    //         if (i > 2) pages.push(i);
+                    //     }
+                    // } else {
+                    //     pages.push(page - 1, page, page + 1, '...', totalPages);
+                    // }
                 } else {
                     for (let i = 1; i <= 3; i++) pages.push(i);
                     pages.push('...', totalPages);
@@ -116,7 +116,7 @@ const Home = () => {
             {fetching && <div className="p-1  w-full bg-red-500 absolute left-0 top-0"></div>}
             <div className="border mx-auto mainSection relative overflow-auto lg:w-[70%] w-full h-full">
                 {searchError && <div className="text-red-500 absolute top-0 text-center w-full ">{searchError}</div>}
-                <div className="md:flex flex-col border-b-2 md:justify-between justify-center items-center px-3 py-1">
+                <div className="md:flex-row flex flex-col border-b-2 md:justify-between justify-center items-center px-3 py-1">
                     <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/KnowAMovie.png" alt="kaw" className="darkModeIcon" />
                     <img onClick={() => { if (data.length > 0 || respData.Response === "False") { setData([]); setSearchTerm(""); setSearchError(""); setRespData({}) } }} src="/kawLight.png" alt="kaw" className="lightModeIcon" />
                     <div className="h-[fit-content] flex items-center border rounded-sm border-yellow">
@@ -145,7 +145,7 @@ const Home = () => {
                         Total Pages: {
                             pageBtn.map((val, idx) =>
                                 val === '...' ? (
-                                    <input type="number" className="w-10 text-center" value={page} onChange={(e) => { setPage(e.target.value) }} name="pageNo" id="pageNo" />
+                                    <input type="number" className="w-10 text-center border" value={page} onChange={(e) => { setPage(e.target.value) }} name="pageNo" id="pageNo" />
                                 ) : (
                                     <button
                                         className={page === val ? "border px-2 bg-pink-300 text-black mx-2" : "border px-2 mx-2"}
